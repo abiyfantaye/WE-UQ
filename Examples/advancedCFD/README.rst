@@ -12,7 +12,7 @@ Community level wind simulation: WE-UQ coupled with BRAILS++
 Introduction
 ^^^^^^^^^^^^^
 
-This module provides a workflow to simulate wind flow inside a community. The building footprints are generated using the  inventory. To install BRAILS++, the user needs to run the command: pip install brails. Additionally, the user needs to install the geopandas, shapely, pyproj, trimesh, rtree, and mapbox-earcut python libraries using the command: ``pip install geopandas shapely pyproj trimesh rtree mapbox-earcut``. To generate the computational domain, the user needs to provide the longitude and latitude of the center point, the bounding radius, and the longitudes and latitudes of the bounding box encompassing the region of interest. The user needs to have  downloaded on their computer. The user needs to input the parameters for the CFD simulation following the workflow shown in :numref:`fig-advanced-cfd-1`, using the developed Python script for this module, then run the wind simulation in OpenFOAM, and finally view the results in Paraview.
+This module provides a workflow to simulate wind flow inside a community. The building footprints are generated using the  inventory. To install BRAILS++, the user needs to run the command: pip install brails. Additionally, the user needs to install the ``geopandas``, ``shapely``, ``pyproj``, ``trimesh``, ``rtree``, and ``mapbox-earcut`` python libraries using the command: ``pip install geopandas shapely pyproj trimesh rtree mapbox-earcut``. To generate the computational domain, the user needs to provide the longitude and latitude of the center point, the bounding radius, and the longitudes and latitudes of the bounding box encompassing the region of interest. The user needs to have  downloaded on their computer. The user needs to input the parameters for the CFD simulation following the workflow shown in :numref:`fig-advanced-cfd-1`, using the developed Python script for this module, then run the wind simulation in OpenFOAM, and finally view the results in Paraview.
 
 .. _fig-advanced-cfd-1:
 
@@ -116,7 +116,7 @@ The user is required to have OpenFOAM v10 installed on their computer. Once the 
 Post-process in Paraview
 """"""""""""""""""""""""""
 
-The user is required to have Paraview 5.10, which usually comes with the OpenFOAM v10 installation. The user can open the Community.foam file in the case folder in ParaView and view the simulation results. The profile and plane data can be viewed in case/postProcessing/Profile_no. or Plane_no./time folder. The plane outputs are saved for each time instant in a .vtk file, which can be directly viewed in ParaView, whereas the profile outputs are saved in a text file, and a Python or MATLAB script can be written if the user needs to access the values and plot the time history.
+The user is required to have Paraview 5.10, which usually comes with the OpenFOAM v10 installation. The user can open the Community.foam file in the case folder in ParaView and view the simulation results. The profile and plane data can be viewed in ``case/postProcessing/Profile_no``. or Plane_no./time folder. The plane outputs are saved for each time instant in a .vtk file, which can be directly viewed in ParaView, whereas the profile outputs are saved in a text file, and a Python or MATLAB script can be written if the user needs to access the values and plot the time history.
 
 Manipulating the OpenFOAM files for miscellaneous simulations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -137,7 +137,7 @@ User-defined initialization and inflow
 """"""""""""""""""""""""""""""""""""""
 The workflow provides options between a logarithmic wind profile and a TINF wind profile. However, if the user requires a different wind profile, they can modify the case/0/U, k, epsilon files for RANS and the case/0/U file for LES. In the boundaryField section, at the inlet, the user can input the profile of choice. If OpenFOAM v10 has standard profiles available, the user can visit the website and apply the condition as shown on the website. Alternatively, the user can assign the value of a variable at each face of the inlet boundary. This can be done in the following way:
 
-1. In the case folder, after creating the mesh (blockMesh and snappyHexMesh), run the postProcess -func writeCellCentres command to get the coordinates of each face at the boundary and each cell in the domain. The coordinates are saved in the files “C”, “Cx”, “Cy”, and “Cz” files inside the case/0 folder. 
+1. In the case folder, after creating the mesh (``blockMesh`` and ``snappyHexMesh``), run the postProcess -func writeCellCentres command to get the coordinates of each face at the boundary and each cell in the domain. The coordinates are saved in the files “C”, “Cx”, “Cy”, and “Cz” files inside the ``case/0`` folder. 
 
 2. Extract the y and z coordinates for the inlet face and then calculate the variables at each of those coordinates using a Python script or a MATLAB script. 
 
@@ -180,8 +180,6 @@ Turbulence Modeling and wall functions
 If the user wishes to use different models, such as DES (Detached Eddy Simulations), RANS , or LES dynamic Smagorinsky, then the user would need to modify the turbulenceProperties file and add or remove field variables depending on the needs of the model. The usage for other turbulence models can be found in the OpenFOAM documentation.
 
 The workflow described above uses standard ABL wall functions. However, different wall functions can be used if the user needs. The nut, k, epsilon files must be modified to implement the wall function. The modification needs to be made in the wall boundaries in the boundaryField section.
-
-
 
 Example
 ^^^^^^^^
@@ -226,7 +224,7 @@ The user interface for inputting the given data is shown in :numref:`fig-advance
 
    Output generating the building footprints.
 
-As illustrated in :numref:`fig-advanced-cfd-9`, the total region includes 37 building footprints, while the ROI contains 2 building footprints—consistent with geojson output shown in :numref:`fig-advanced-cfd-10`.
+As illustrated in :numref:`fig-advanced-cfd-9`, the total region includes 37 building footprints, while the ROI contains 2 building footprints—consistent with ``geojson`` output shown in :numref:`fig-advanced-cfd-10`.
 
 
 .. _fig-advanced-cfd-10:
@@ -291,7 +289,7 @@ Three refinement boxes were defined to get a good mesh resolution. The extents a
 
 **Surface refinements**
 
-The surface refinement level was set to 5 for the region of interest (ROI) and to 4 for the surrounding buildings. The number of cells between each refinement level was 10. With these settings, the input configuration for generating the snappyHexMeshDict is complete, as shown in :numref:`fig-advanced-cfd-15` and :numref:`fig-advanced-cfd-16`
+The surface refinement level was set to 5 for the region of interest (ROI) and to 4 for the surrounding buildings. The number of cells between each refinement level was 10. With these settings, the input configuration for generating the ``snappyHexMeshDict`` is complete, as shown in :numref:`fig-advanced-cfd-15` and :numref:`fig-advanced-cfd-16`
 
 .. _fig-advanced-cfd-15:
 
@@ -355,9 +353,9 @@ At the ground surface, a smooth wall boundary condition is applied whereas, on t
 
 Simulation time setup
 """""""""""""""""""""
-The simulation duration was 10,000 with a time step of 1, indicating that the RANS simulation will run for 10,000 iterations. The output data was written every 1,000 iterations. With these inputs, the controlDict file was generated, as shown in :numref:`fig-advanced-cfd-20`.
+The simulation duration was 10,000 with a time step of 1, indicating that the RANS simulation will run for 10,000 iterations. The output data was written every 1,000 iterations. With these inputs, the ``controlDict`` file was generated, as shown in :numref:`fig-advanced-cfd-20`.
 
-Ten processors were used to run the simulation in parallel. This will automatically generate the decomposeParDict file using the scotch method, allowing the simulation to run in parallel, as :numref:`fig-advanced-cfd-20` shows.
+Ten processors were used to run the simulation in parallel. This will automatically generate the ``decomposeParDict`` file using the scotch method, allowing the simulation to run in parallel, as :numref:`fig-advanced-cfd-20` shows.
 
 .. _fig-advanced-cfd-20:
 
